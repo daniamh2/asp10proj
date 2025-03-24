@@ -1,0 +1,25 @@
+﻿{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "http": {
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "launchBrowser": true, //true for aoutomatic swagger 
+        "launchUrl": "scalar/v1",
+        "applicationUrl": "http://localhost:5193", //",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+    },
+    "https": {
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "launchBrowser": true, //true for aoutomatic swagger 
+        "launchUrl": "scalar/v1", // lunch link
+        "applicationUrl": "https://localhost:7217", //;http://localhost:5193",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+    }
+  }
+}
