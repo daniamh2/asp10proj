@@ -11,8 +11,8 @@ using project.Context;
 namespace project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250324154205_mig")]
-    partial class mig
+    [Migration("20250324184035_InitialCreatee")]
+    partial class InitialCreatee
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,42 +32,21 @@ namespace project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("project.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("varchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(6,2)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
                 });
 #pragma warning restore 612, 618
         }

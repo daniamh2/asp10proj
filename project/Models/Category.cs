@@ -7,8 +7,7 @@ namespace project.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-
-        public string status { get; set; }
+        public bool status { get; set; }
 
 
         //       public List<Product> Products { get; set; }
