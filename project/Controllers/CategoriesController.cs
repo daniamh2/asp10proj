@@ -2,47 +2,43 @@
 using Microsoft.EntityFrameworkCore;
 using project.Context;
 using project.Models;
+using project.Services;
 
 namespace project.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : Controller
+    public class CategoriesController(ICategory_services categoryServices) : ControllerBase
     {
-        ApplicationDbContext _context;
-        public CategoriesController (ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        private readonly ICategory_services categoryServices = categoryServices;
+        
         [HttpGet("")]
         public IActionResult GetAll()
         {
-            var categories = _context.Categories;
+             var categories =categoryServices.GetAll();
             return Ok(categories);
         }
         [HttpGet("{id}")]
         public IActionResult GetById([FromRoute] int id)
         {
-            var category = _context.Categories.Find(id);
+            var category = categoryServices.Get(c => c.Id == id);
             return category== null ?NotFound():Ok(category);
         }
 
         [HttpPost("")]
         public IActionResult create([FromBody] Category category)
         {
-            _context.Categories.Add(category);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetById), new { category.Id }, category);
+           var categoryInDb = categoryServices.Add(category);
+            return CreatedAtAction(nameof(GetById), new { categoryInDb.Id }, categoryInDb);
         }
 
         [HttpPut("{id}")]
-        public IActionResult create([FromRoute] int id, [FromBody] Category category)
+        public IActionResult edit([FromRoute] int id, [FromBody] Category category)
         {
-            var categoryInDb = _context.Categories.AsNoTracking().FirstOrDefault(c => c.Id == id);
-            if (categoryInDb == null) return NotFound();
-            category.Id = categoryInDb.Id;
-            _context.Categories.Update(category);
-            _context.SaveChanges();
+            var categoryInDb = categoryServices.Edit(id,category);
+
+            if (!categoryInDb) return NotFound();
+
             return NoContent();
         }
 
@@ -50,10 +46,10 @@ namespace project.Controllers
         [HttpDelete("{id}")]
         public IActionResult remove([FromRoute] int id)
         {
-            var category = _context.Categories.Find(id);
-            if(category==null) return NotFound();
-            _context.Categories.Remove(category);
-            _context.SaveChanges();
+            var categoryInDb = categoryServices.Remove(id);
+
+            if (!categoryInDb) return NotFound();
+
             return NoContent();
         }
     }
